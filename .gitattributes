@@ -1,0 +1,3 @@
+# Windows-spezifische Dateien behalten CRLF
+*.bat text eol=crlf
+*.vbs text eol=crlf

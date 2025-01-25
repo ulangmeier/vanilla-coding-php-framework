@@ -1,0 +1,114 @@
+:root {
+    --ci-primary-color: rgb(28, 71, 199);
+    --ci-secondary-color: orange;
+
+    --primary-color: var(--ci-primary-color);
+    --secondary-color: var(--ci-secondary-color);
+
+    --dark-color: var(--ci-primary-color);
+    --light-color: #ffffff;
+
+    --dark-blend-color: rgba(28, 71, 199, 0.6);
+    
+    --success-color: #28a745;
+    --info-color: #17a2b8;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --light-bg-color: #f8f9fa;
+    --dark-bg-color: #343a40;
+    --primary-bg-color: #007bff;
+    --secondary-bg-color: #6c757d;
+    --success-bg-color: #28a745;
+    --info-bg-color: #17a2b8;
+    --warning-bg-color: #ffc107;
+    --danger-bg-color: #dc3545;
+    --light-text-color: #f8f9fa;
+    --dark-text-color: #343a40;
+    --primary-text-color: #007bff;
+    --secondary-text-color: #6c757d;
+    --success-text-color: #28a745;
+    --info-text-color: #17a2b8;
+    --warning-text-color: #ffc107;
+    --danger-text-color: #dc3545;
+}
+
+/** Bilder im Card-Element: mobile fix für Bootstrap. */
+    .card img {
+        max-width: calc(100vw - var(--bs-card-spacer-x) * 2 - (var(--bs-gutter-x) * .5)*2);
+    }
+
+    @media (min-width: 576px) {
+        .card img {
+            max-width: 100%;
+        }
+    }
+/** End of mobile fix für Bootstrap */
+
+
+body.charts {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 0 75px 0;
+}
+
+.container {
+    background-color: #ffffffed;
+    border-radius: 15px;
+    padding: 15px;
+    max-width: 500px;
+    user-select: none; /* Nicht unterstützte Browser */
+}
+
+.background-image {
+    background-repeat: no-repeat; 
+    background-size: cover;
+    background-attachment: fixed;
+    display: block;
+    position: fixed;
+    background-position: center top;
+    min-height: 100vh;
+    z-index: -10;
+    width: 100%;
+    margin:0;
+    padding:0;
+    left: 0;
+    top: 0;    
+}
+
+.float-right {
+    float: right;
+}
+
+.float-left {
+    float: left;
+}
+
+.dark-blend {
+    background-blend-mode: darken;
+    background-color: var(--dark-blend-color);
+    color:var(--light-text-color);
+}
+.light-blend {
+    background-blend-mode: lighten;
+    background-color: rgba(255,255,255,0.6);
+    color:var(--dark-text-color);
+}
+
+.roll-in {
+    animation: roll-in 0.25s linear 0s 1 normal forwards;
+}
+
+@keyframes roll-in {
+	0% {
+		opacity: 0;
+		transform: translateY(250px);
+	}
+
+	100% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}

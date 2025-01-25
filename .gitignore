@@ -1,0 +1,11 @@
+# Exclude vendor libaries (install them with composer-install.bat!):
+/vendor/
+/vendor/**
+
+# Exclude some file types:
+*.lck
+*.bak
+*.log
+/_old/
+/_old/**
+*.log

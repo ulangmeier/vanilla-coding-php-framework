@@ -1,0 +1,3 @@
+	<?php shutdown(); ?>
+</body>
+</html>
