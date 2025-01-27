@@ -25,3 +25,13 @@ If you love _Vanilla Coding in PHP_, then this basic framework could be good for
 ---
 
 *Note: You need to download and install XAMPP for your Windows OS to test your site locally.*
+
+---
+
+## About
+
+Vanilla PHP Framework Project was created by Urs Langmeier as an open-source initiative to help developers streamline their workflow. Urs Langmeier is the founder and initial developer, and continues to maintain and develop the project.
+
+## Acknowledgements
+
+Special thanks to all contributors who help improve the project. All contributions are highly appreciated!
