@@ -30,7 +30,7 @@ If you love _Vanilla Coding in PHP_, then this basic framework could be good for
 
 ## About
 
-Vanilla PHP Framework Project was created by Urs Langmeier as an open-source initiative to help developers streamline their workflow. Urs Langmeier is the founder and initial developer, and continues to maintain and develop the project.
+Vanilla PHP Framework was created by Urs Langmeier as an open-source initiative to help developers streamline their workflow. Urs Langmeier is the founder and initial developer, and continues to maintain and develop the project.
 
 ## Acknowledgements
 
