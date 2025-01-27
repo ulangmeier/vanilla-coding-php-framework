@@ -1,6 +1,31 @@
 <?php
 
-    register_shutdown_function('documentEndChecks');
+    ######################################################################################################
+    # Project: Vanilla PHP Framework
+    # Author: Urs Langmeier, Langmeier Software
+    # Role: Founder and Initial Developer
+    #
+    # Description:  This lightweight vanilla PHP framework combines the power of Bootstrap and
+    #               HTML5 Vanilla Coding, simplifying development by eliminating the need to manage
+    #               external JavaScript libraries, CSS files, and web-browser specific hassles like
+    #               fonts and meta tags.
+    #
+    #               It offers a quick and efficient start for PHP professionals launching new projects,
+    #               while providing an easy, accessible entry point for beginners eager to build their
+    #               own SaaS platforms. Designed for AI-driven app development, the framework helps
+    #               streamline the process of creating intelligent, modern applications.
+    #
+    # Initial development started on October 12th, 2024.
+    #
+    # License: Boost Software License - Version 1.0 - August 17th, 2003
+    #          https://www.boost.org/users/license.html
+    #
+    # Copyright (c) 2025, Urs Langmeier
+    #
+    ######################################################################################################
+
+    // In Vanilla, we don't need this (will be done in vanilla.php) & is subject to be removed:
+    // register_shutdown_function('documentEndChecks');
 
     /**
      * Im HTML-Header platziert, fügt diese Funktion alle benötigten Libraries in das HTML-Dokument
@@ -28,7 +53,7 @@
      * Folgende Dinge werden von libraries() zusätzlich noch mit geladen:
      * -------------------------------------------------------------------
      * 
-     * - `index.css` oder `main.css`, falls vorhanden
+     * - `index.css` oder `main.css`, falls vorhanden (im WebRoot oder im Verzeichnis `css/`)
      * 
      * - Seitenspezifisches Stylesheet: eine `.css-Datei` mit dem aktuellen Skriptnamen,
      *   falls vorhanden.
@@ -134,10 +159,7 @@
             consoleLog("Seitenspezifisches Stylesheet ".$currentStylesheet." existiert nicht!");
         }*/
 
-        // index.css oder main.css (falls vorhanden):
-        if (file_exists("index.css")) {
-            echo '<link rel="stylesheet" href="index.css">';
-        }
+        // main.css (falls vorhanden):
         if (file_exists("main.css")) {
             echo '<link rel="stylesheet" href="main.css">';
         }
@@ -208,7 +230,10 @@
         if (in_array($libName, $globalRequiredLibraries)) {
             // Ja!
             // -> Nichts tun. Nur einmal hinzufügen.
-            consoleLog("Library wurde bereits hinzugefügt: ".$libName);
+            // ula, 27.01.2025
+            // In Vanilla we don't want to show this message (we want clean HTML code,
+            // not just for ease of use, but also for optimal SEO):
+            // consoleLog("Library wurde bereits hinzugefügt: ".$libName);
             return;
         }
 
