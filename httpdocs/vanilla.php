@@ -26,6 +26,8 @@
     ######################################################################################################
 
 	require_once('lib/mainfunctions.php');
+	require_once('lib/errors.php');
+	installWellErrorHandler(E_ALL, E_ALL);
 
 	$blnBeginBusinessCalled = false;
 	register_shutdown_function('vanillaDocumentEndChecks');

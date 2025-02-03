@@ -1,5 +1,7 @@
 <?php
 	require_once('vanilla.php');
+
+    // Let's begin our business
 	BeginBusiness(	"MyApp"
 					,"My Application"
 					,"You can do this and that with my app!"
@@ -9,8 +11,8 @@
                 );
 
     // Let's produce an error, just to demonstrate how it will looks like:
-    // Coming soon (in upcoming release): adding well-formed error handling...
-    trigger_error("Whew!! That just blew my mind, for real! We have an error that we just produced", E_USER_ERROR);
+    // Coming soon (in upcoming release): adding well-formatted error handling...
+    trigger_error("Whew!! That just blew my mind, for real! We have an error that we just produced. Just close that thing if you want to proceed.", E_USER_WARNING);
 
 ?>
 

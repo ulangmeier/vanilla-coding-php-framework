@@ -791,6 +791,10 @@
     function documentEndChecks() {
         // Diese Hook wird am Ende des Dokuments aufgerufen.
         // -> Hier prüfen wir ein paar Dinge, ob alles richtig gelaufen ist.
+        //////////////////////////////////////////////////////////////////////////////
+        // Wichtig: hier immer mit True raus, daimt auch weitere shutdown functions()
+        //          noch von PHP ausgeführt werden...
+        //////////////////////////////////////////////////////////////////////////////
 
         // Initialisierung:
         // Hat der Benutzer die Funktion libraries() aufgerufen?
@@ -799,7 +803,7 @@
         // Falls nein, gehen wir gleich raus ohne weiteren Checks, denn dies
         // würde z.B. bei auf AJAX basierenden Seiten, die keine Libraries benötigen,
         // zu einem Fehler führen und könnte auch beim Debuggen störend sein...
-        if ( !$globalLibrariesprocessed) exit;
+        if ( !$globalLibrariesprocessed) return true;
 
         // 1. Der Benutzer hat die Funktion libraries_LateLoad() aufgerufen?
         global $globalLateLoadedLibrariesProcessed;
@@ -829,6 +833,7 @@
             echo '<pre>'.htmlentities($ob).'</pre>';
             exit;
         }
+        return true;
     }
 
     function debug($mixed_var) {
