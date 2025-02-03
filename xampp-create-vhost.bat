@@ -1,5 +1,5 @@
 @echo off
-setlocal
+setlocal enabledelayedexpansion
 
 :: Codepage UTF8 einstellen (65001)
 chcp 65001 >nul
@@ -15,6 +15,8 @@ IF %ERRORLEVEL% NEQ 0 (
     exit /b
 )
 
+:: Keep the Script root for later use:
+set scriptRoot=%~dp0
 
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: Getting the right Domain Name
@@ -198,7 +200,7 @@ echo Activating HTTPS for %subDomainName%...
 %~d0
 
 :: Ins Directory des aktuellen Batch-Skripts wechseln:
-cd %~dp0
+cd "%scriptRoot%"
 
 :: In den Tools-Ordner wechseln:
 cd tools
@@ -245,6 +247,35 @@ echo Check ^& Update site specific PHP Configuration...
 echo Run: update-php-configuration.vbs %subDomainName%
 cscript //nologo "update-php-configuration.vbs"
 
+
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: 8. Install the dependencies with Composer
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+:: Ins Directory des aktuellen Batch-Skripts wechseln:
+cd "%scriptRoot%"
+
+echo Composer: Installing the dependencies...
+cmd /c composer
+
+
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: 9. Additional Steps
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: Note: You can start additional scripts here from the tools folder...
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+:: Change to the tools folder:
+cd "%scriptRoot%\tools"
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: 10. Finally Restart the apache server
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+echo Run: apache-restart.vbs
+cscript //nologo "runasuser.vbs" xampp-restart.vbs
+
+
 goto :successMessage
 
 :successMessage
@@ -273,3 +304,20 @@ goto :successMessage
 		del "%tempFile%"
 	)
 
+:startBrowser
+	:: Start the site in the default browser...
+	set "filePath=%documentRoot%"
+
+	:: Check if the root folder exists...
+	if exist "%filePath%" (
+		:: Yes, open the browser after a short waiting period that lets XAMPP reconfigure apache...
+		echo Browser will be started in a short time... please wait for starting up Apache Web Service...
+		timeout /t 15
+		start "" /B "%filePath%"
+	) else (
+		echo The folder "%filePath%" does not exist. Cannot open the site in the Webbrowser. Quit.
+	)
+
+
+:end
+pause

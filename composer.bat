@@ -1,4 +1,5 @@
-:: Startet einen schnellen lokalen Webserver zur Ansicht der Site im lokalen Browser...
+:: Installiert die in der Datei composer.lock als notwendig markierten Libraries mit Composer.
+:: Composer wird automatisch heruntergeladen, wenn es noch nicht existieren sollte.
 @echo off
 setlocal
 
@@ -67,5 +68,8 @@ if "%1" == "update" (
 	echo Composer: Updating dependencies...
 	tools\composer update
 )
-
-pause
+if "%1" NEQ "" (
+	echo.
+	echo Composer %*
+	tools\composer %*
+)
