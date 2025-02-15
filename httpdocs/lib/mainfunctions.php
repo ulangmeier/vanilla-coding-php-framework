@@ -447,7 +447,7 @@
      *    Der Wert des Schlüssels, wenn er existiert, sonst null.
      * 
     */
-    function arrVal(&$array = null, $key) {
+    function arrVal(&$array, $key) {
         if (array_key_exists($key, $array)) {
             return $array[$key];
         } else {
