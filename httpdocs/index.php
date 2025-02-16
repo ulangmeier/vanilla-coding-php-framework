@@ -8,7 +8,7 @@
 	// Let's begin our business
 	BeginBusiness(	"MyApp"
 					,"My Application"
-					,"You can do this and that with my app!");
+					,"You can do this and that with my app!");				
 
 	// We are ready!
 	// Just place your code here...

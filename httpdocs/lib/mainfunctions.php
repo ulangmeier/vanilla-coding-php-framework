@@ -97,6 +97,23 @@
      * 
      */
     function libraries($strAdditionalModules = "") {
+        vanillaIncludeLibraries($strAdditionalModules, false);
+    }
+
+    /**
+     * Wie libraries(), aber mit der Möglichkeit, die Libraries sofort in das Dokument einzufügen.
+     *
+     * @param  string $strAdditionalModules     Die zusätzlichen Libraries, die geladen werden sollen (durch Kommas getrennt).
+     * 
+     *                                          Beispiel: `"animate,font-awesome"`
+     * 
+     *                                          Wichtig: Die Libraries müssen in der Datei `lib/libraries.json` definiert sein!
+     * 
+     * @param  bool   $pblnEcho                 True = Gibt die Libraries sofort aus, False = Erst bei BeginBusiness in den HTML-Header einfügen.
+     * @return string 
+     * @author Urs Langmeier
+     */
+    function vanillaIncludeLibraries($strAdditionalModules = "", $pblnEcho = true) {
 
         // Festhalten, dass die Libraries bereits geladen wurden.
         // -> Dies wird beim Beenden des Dokuments geprüft.
