@@ -397,7 +397,7 @@
 
         // Interne Hauptfunktionen (Mainfunctions):
         $libURL = "lib/mainfunctions.js";
-        echo "\n".'<script src="'.$libURL.'"></script>'."\n";
+        echo "\n".VANILLA_HTML_INDENT.'<script src="'.$libURL.'"></script>'."\n";
 
         // Aktuelles Skript:
         // -> Falls eine .js-Datei mit dem aktuellen PHP-Skriptnamen
@@ -405,9 +405,11 @@
         $currentScript = basename($_SERVER['SCRIPT_FILENAME'], '.php') . '.js';
 
         if (file_exists($currentScript)) {
-            echo '<script src="'.$currentScript.'"></script>';
+            echo VANILLA_HTML_INDENT.'<script src="'.$currentScript.'"></script>';
         }  else {
+            echo VANILLA_HTML_INDENT;
             consoleLog($currentScript." existiert nicht!");
+            echo("\n");
         }
 
         // Module, die zum später laden hinzugefügt wurden
@@ -415,7 +417,7 @@
         global $globalRequiredLibrariesToLoadLater_JS;
         if (!empty($globalRequiredLibrariesToLoadLater_JS)) {
             foreach ($globalRequiredLibrariesToLoadLater_JS as $lateLoadJavaScript) {
-                echo $lateLoadJavaScript;
+                echo VANILLA_HTML_INDENT.$lateLoadJavaScript;
             }
         }
     
