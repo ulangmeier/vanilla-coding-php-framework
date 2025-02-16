@@ -66,6 +66,7 @@ Set sourceStream = fso.OpenTextFile(sourceFile, 1)
 Set targetStream = fso.OpenTextFile(targetFile, 8, True)
 
 blnFirst = true
+lInsertedLines = 0
 
 ' Durch jede Zeile der Quelldatei gehen
 Do While Not sourceStream.AtEndOfStream
@@ -102,6 +103,7 @@ Do While Not sourceStream.AtEndOfStream
 		
 		'Einstellungs-Zeile einfügen:
 		targetStream.WriteLine line
+		lInsertedLines = lInsertedLines + 1
 		
 		if left(line, 1) <> "#" then
 			WScript.Echo "Added setting """ & line & """ to httpd.conf."
@@ -114,6 +116,13 @@ Do While Not sourceStream.AtEndOfStream
 		end if
     End If
 Loop
+
+if lInsertedLines > 0 then
+	'ula, 16.02.2025
+	'Wenn etwas eingefügt wurde, sicherstellen, dass eine neue Zeile anfängt, sonst
+	'könnte Apache fehlschlagen...
+	targetStream.WriteLine ""
+end if
 
 ' Dateien schließen
 sourceStream.Close

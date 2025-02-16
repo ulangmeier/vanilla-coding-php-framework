@@ -151,6 +151,7 @@ if %errorlevel% equ 0 (
 ) else (
 	(
 		:: Das Directory D:\git ist noch nicht freigegeben wir holen das nach...
+		echo.
 		echo ^<Directory "%currentDir%"^>
 		echo    # Possible values for the Options directive are "None", "All",
 		echo    # or any combination of:
@@ -174,7 +175,8 @@ if %errorlevel% equ 0 (
 		echo    # Controls who can get stuff from this server.
 		echo    #
 		echo    Require all granted
-		echo ^</Directory^>		
+		echo ^</Directory^>	
+		echo.
 
 	) >> "%apacheConf%"
 	

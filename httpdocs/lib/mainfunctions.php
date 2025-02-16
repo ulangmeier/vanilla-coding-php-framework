@@ -27,6 +27,16 @@
     // In Vanilla, we don't need this (will be done in vanilla.php) & is subject to be removed:
     // register_shutdown_function('documentEndChecks');
 
+    // Definiere die Vanilla-Version:
+    define("VANILLA_VERSION", "1.0.0");
+
+    // Define the default intentation for the HTML output:
+    define("VANILLA_HTML_INDENT", "    ");
+
+    // Initialisierung:
+    global $globalStrLibrariesPreannounced;
+    $globalStrLibrariesPreannounced = "";
+
     /**
      * Im HTML-Header platziert, fügt diese Funktion alle benötigten Libraries in das HTML-Dokument
      * ein.
@@ -97,7 +107,7 @@
      * 
      */
     function libraries($strAdditionalModules = "") {
-        vanillaIncludeLibraries($strAdditionalModules, false);
+        return libraries_Ex($strAdditionalModules, false, true);
     }
 
     /**
@@ -109,11 +119,35 @@
      * 
      *                                          Wichtig: Die Libraries müssen in der Datei `lib/libraries.json` definiert sein!
      * 
-     * @param  bool   $pblnEcho                 True = Gibt die Libraries sofort aus, False = Erst bei BeginBusiness in den HTML-Header einfügen.
+     * @param  bool   $pblnEcho                 True =  Gibt den HTML-Code für die Libraries sofort aus.
+     *                                          False = Gibt den HTML-Code für die Libraries als String
+     *                                                  zurück.
+     * 
+     * @param bool   $pblnPreannounce           True =  Die Libraries werden jetzt noch nicht eingefügt, sondern erst einmal
+     *                                                  vorangekündigt. Im BeginBusiness werden diese dann in den HTML-Header
+     *                                                  eingefügt.
+     * 
+     *                                          False = Sofortige Verarbeitung.
+     * 
      * @return string 
      * @author Urs Langmeier
      */
-    function vanillaIncludeLibraries($strAdditionalModules = "", $pblnEcho = true) {
+    function libraries_Ex($strAdditionalModules = "", $pblnEcho = false, $pblnPreannounce = false) {
+
+        // Init output buffer:
+        $ob = "";
+
+        if ( $pblnPreannounce ) {
+            // Libraries werden jetzt noch nicht eingefügt, sondern erst einmal
+            // für später festgehalten (falls libraries() vor BeginBusiness()
+            // oder noch vor dem HTML-Header aufgerufen wird):
+            global $globalStrLibrariesPreannounced;
+            if ( $globalStrLibrariesPreannounced != "" ) {
+                $globalStrLibrariesPreannounced .= ",";
+            }
+            $globalStrLibrariesPreannounced .= $strAdditionalModules;
+            return;
+        }
 
         // Festhalten, dass die Libraries bereits geladen wurden.
         // -> Dies wird beim Beenden des Dokuments geprüft.
@@ -153,7 +187,7 @@
                     if ( instr($strAdditionalModules, ",".$libName."," ) ) {
                         // Die Bibliothek wird jetzt benötigt...
                         // -> Lade die Bibliothek:
-                        require_library($library['name']);
+                        $ob .= require_library($library['name'], "locked", false);
                     } else {
                         // Die Bibliothek wird nicht benötigt...
                         // -> Lade die Bibliothek nicht:
@@ -163,7 +197,7 @@
             } else {
                 // Die Bibliothek wird immer geladen...
                 // -> Lade die Bibliothek:
-                require_library($library['name']);
+                $ob .= require_library($library['name']);
             }
         }
 
@@ -171,19 +205,23 @@
         // existiert):
         $currentStylesheet = basename($_SERVER['SCRIPT_FILENAME'], '.php') . '.css';
         if (file_exists($currentStylesheet)) {
-            echo '<link rel="stylesheet" href="'.$currentStylesheet.'">';
+            $ob .= '<link rel="stylesheet" href="'.$currentStylesheet.'">';
         } /* else {
             consoleLog("Seitenspezifisches Stylesheet ".$currentStylesheet." existiert nicht!");
         }*/
 
         // main.css (falls vorhanden):
         if (file_exists("main.css")) {
-            echo '<link rel="stylesheet" href="main.css">';
+            $ob .= '<link rel="stylesheet" href="main.css">'."\n";
         }
         if (file_exists("css/main.css")) {
-            echo '<link rel="stylesheet" href="/css/main.css">';
-        }        
-        
+            $ob .= '<link rel="stylesheet" href="/css/main.css">'."\n";
+        }
+        if ( $pblnEcho ) {
+            echo $ob;
+        } else {
+            return $ob;
+        }
     }
 
     /**
@@ -191,7 +229,9 @@
      * 
      * Die Library muss in der Datei "lib/libraries.json" definiert sein.
      *
-     * @param  string $libName Der Name der CSS / JavaScript Library
+     * @param  string   $libName    Der Name der CSS / JavaScript Library
+     * @param  bool     $p_blnEcho  True  = Gibt den HTML-Code sofort aus
+     *                              False = HTML-Code als String zurückgeben.
      * @return void
      * 
      * Wichtig:
@@ -218,7 +258,10 @@
      * @example require_library("bootstrap", "3.4.1");
      * 
      */
-    function require_library($libraryName, $libraryVersion = "locked") {
+    function require_library($libraryName, $libraryVersion = "locked", $p_blnEcho = true) {
+
+        // Init output buffer:
+        $ob = "";
 
         // Library-Name in Kleinbuchstaben umwandeln:
         $libName = strtolower($libraryName);
@@ -311,23 +354,28 @@
 
             if ( $cssLink != "" ) {
                 // CSS-Link hinzufügen:
-                echo "<!-- " . $library['name'] . " -->";
-                echo '<link rel="stylesheet" href="'.$cssLink.'">'."\n";
+                $ob .= "<!-- " . $library['name'] . " -->";
+                $ob .= '<link rel="stylesheet" href="'.$cssLink.'">'."\n".VANILLA_HTML_INDENT;
             }
             if ( $jsLink != "" ) {
                 if ($jsLateLoad) {
                     // JS-Link später hinzufügen:
                     // consoleLog("Late Load (JS): ".$libraryName);
                     $javaScript = "<!-- " . $library['name'] . " -->"
-                                 .'<script src="'.$jsLink.'"></script>'."\n";
+                                 .'<script src="'.$jsLink.'"></script>'."\n".VANILLA_HTML_INDENT;
                     $globalRequiredLibrariesToLoadLater_JS[] = $javaScript;
                 
                 } else {
                     // JS-Link hinzufügen:
-                    echo "<!-- " . $library['name'] . " -->";
-                    echo '<script src="'.$jsLink.'"></script>'."\n";
+                    $ob .= "<!-- " . $library['name'] . " -->";
+                    $ob .= '<script src="'.$jsLink.'"></script>'."\n".VANILLA_HTML_INDENT;
                 }
             }
+        }
+        if ( $p_blnEcho ) {
+            echo $ob;
+        } else {
+            return $ob;
         }
     }
 
@@ -358,9 +406,9 @@
 
         if (file_exists($currentScript)) {
             echo '<script src="'.$currentScript.'"></script>';
-        } /* else {
+        }  else {
             consoleLog($currentScript." existiert nicht!");
-        }*/
+        }
 
         // Module, die zum später laden hinzugefügt wurden
         // werden hier geladen:

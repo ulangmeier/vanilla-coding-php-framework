@@ -47,7 +47,24 @@
 		define("__APPNAME__", $appname);
 		define("__APPTITLE__", ($title ? $title : $appname));
 		define("__APPDESCRIPTION__", $description);
-		define("__ON_DEMAND_LIBRARIES__", $libraries);
+		
+		// Module, die vor dem Aufruf von BeginBusiness mit der ->libraries()-Funktion hinzugefügt
+		// wurden, werden hier geladen:
+        global $globalStrLibrariesPreannounced;
+        if (!empty($globalStrLibrariesPreannounced)) {
+			// Es wurde bereits vorher eine ->libraries()-Funktion aufgerufen
+			// -> Diese Libraries wollen wir nun ebenfalls in den Header laden
+			//    und zwar an erster Position...
+			if ( $libraries != "" ) {
+				$libraries = $globalStrLibrariesPreannounced.",".$libraries;
+			} else {
+				$libraries = $globalStrLibrariesPreannounced;
+			}
+        }
+
+		// Libraries als Code umwandeln und Header rendern:
+		$librariesCode = libraries_Ex($libraries, false, false);
+		define("__LIBRARIES__", $librariesCode);
 		include("etc/head.php");
 
 		// Footer an das Ende der Seite setzen:

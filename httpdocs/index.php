@@ -14,8 +14,8 @@
 	// Just place your code here...
 ?>
 
-<div class="container text-center mt-5">
-    <h1 class="display-4">Hello, World!</h1>
-    <p class="lead">This is a simple Bootstrap example.</p>
-    <button class="btn btn-primary">Click Me</button>
-</div>
+	<div class="container text-center mt-5">
+		<h1 class="display-4">Hello, World!</h1>
+		<p class="lead">This is a simple Bootstrap example.</p>
+		<button class="btn btn-primary">Click Me</button>
+	</div>
