@@ -137,6 +137,18 @@
         // Init output buffer:
         $ob = "";
 
+        global $blnVanillaBusinessStarted;
+        if ( $blnVanillaBusinessStarted ) {
+            // BeginBusiness() already called
+            // -> Error
+            trigger_error("Error: libraries() called after BeginBusiness()!
+This is not allowed!
+Solution: Place libraries() before BeginBusiness() to fix this error!
+".wellTrace()
+                , E_USER_ERROR);
+            return;
+        }
+
         if ( $pblnPreannounce ) {
             // Libraries werden jetzt noch nicht eingefügt, sondern erst einmal
             // für später festgehalten (falls libraries() vor BeginBusiness()
@@ -348,8 +360,8 @@
             // Library gefunden!
             // consoleLog("Library wird geladen: ".$libraryName);
 
-            $cssLink = $library[$libVer]["css"];
-            $jsLink = $library[$libVer]["js"];
+            $cssLink = $library[$libVer]["css"] ?? "";
+            $jsLink = $library[$libVer]["js"] ?? "";
             $jsLateLoad = $library["jsLateLoad"];
 
             if ( $cssLink != "" ) {

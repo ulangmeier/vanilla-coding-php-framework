@@ -30,6 +30,7 @@
 	installWellErrorHandler(E_ALL, E_ALL);
 
 	$blnBeginBusinessCalled = false;
+	$blnVanillaBusinessStarted = false;
 	register_shutdown_function('vanillaDocumentEndChecks');
 	
 	function BeginBusiness($appname = "", $title = "", $description = "", $libraries = "") {
@@ -67,9 +68,13 @@
 		define("__LIBRARIES__", $librariesCode);
 		include("etc/head.php");
 
+		// Festhalten, dass das Business begonnen hat:
+		global $blnVanillaBusinessStarted;
+		$blnVanillaBusinessStarted = true;
+
 		// Footer an das Ende der Seite setzen:
 		register_shutdown_function("vanillaRenderFooter");
-		
+	
 	}
 
 	function vanillaRenderFooter() {

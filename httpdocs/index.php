@@ -3,7 +3,7 @@
 	require_once('vanilla.php');
 
 	// Let's load some libraries, specified in /lib/libraries.json:
-	libraries("chartjs,animate");
+	libraries("animate,chartjs");
 
 	// Let's begin our business
 	BeginBusiness(	"MyApp"

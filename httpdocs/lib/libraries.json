@@ -58,6 +58,20 @@
             },
             "jsLateLoad": false,
             "loadOnDemand": true
+        },
+        {
+            "name": "animate",
+            "locked": {
+                "version": "4.4.4",
+                "css": "https://cdn.jsdelivr.net/npm/animate.css/animate.min.css"
+            },
+            "latest" : {
+                "version": "4.4.4",
+                "css": "https://cdn.jsdelivr.net/npm/animate.css/animate.min.css"
+            },
+            "jsLateLoad": false,
+            "loadOnDemand": true
         }
+
     ]
 }
