@@ -121,7 +121,7 @@ function WellError ()
         // ->Fehlermeldung anzeigen:
         $fehlertext = $err['message'];
 
-        $title = "Oops.... hier ist etwas schiefgegangen...";
+        $title = "Oops.... something went wrong here...";
         $icon = ":(";
                 
         $errType = "";

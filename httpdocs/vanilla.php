@@ -29,7 +29,7 @@
 	define("VANILLA_VERSION", "1.0.0");
 
 	// Define Debug Mode: 0 = Off, 1 = On
-	define("VANILLA_DEBUG_MODE", 1);
+	define("VANILLA_DEBUG_MODE", 0);
 
 	// Include .css and .js libraries with path? (improves compatibility with some servers)
 	define("VANILLA_INCLUDE_LIBRARIES_WITH_PATH", true);
@@ -45,12 +45,17 @@
 
 	$blnBeginBusinessCalled = false;
 	$blnVanillaBusinessStarted = false;
+
+	// Adding some checks to ensure that the BeginBusiness() function is called
 	register_shutdown_function('vanillaDocumentEndChecks');
 
 	// Define the document root
 	define("__DOCUMENT_ROOT__", $_SERVER['DOCUMENT_ROOT']);
+
+	// Initialize variables
+	$vanillaLateScriptsOutputBuffer = "";
 	
-	function BeginBusiness($appname = "", $title = "", $description = "", $libraries = "") {
+	function BeginBusiness($name = "", $title = "", $description = "", $libraries = "", $refresh = false) {
 		global $blnBeginBusinessCalled;
 
 		if ($blnBeginBusinessCalled) {
@@ -62,8 +67,8 @@
 
 		$blnBeginBusinessCalled = true;
 
-		define("__APPNAME__", $appname);
-		define("__APPTITLE__", ($title ? $title : $appname));
+		define("__APPNAME__", $name);
+		define("__APPTITLE__", ($title ? $title : $name));
 		define("__APPDESCRIPTION__", $description);
 		
 		// Module, die vor dem Aufruf von BeginBusiness mit der ->libraries()-Funktion hinzugefügt
@@ -149,4 +154,16 @@
 		return $ext;
 	}
 	
-?>
+	/**
+	 * Refreshs the body of the site automatically after a given amount of seconds.
+	 *
+	 * @param  int $seconds
+	 * @return string 
+	 * @author Urs Langmeier
+	 */
+	function vn_Site_AutoRefresh($seconds = 0) {
+		global $vanillaLateScriptsOutputBuffer;
+		if ($seconds > 0) {
+			$vanillaLateScriptsOutputBuffer .= VANILLA_HTML_INDENT . '<script>vn_Site_AutoRefresh('.$seconds.')</script>';
+		}
+	}

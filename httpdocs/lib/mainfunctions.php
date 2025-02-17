@@ -219,6 +219,7 @@ Solution: Place libraries() before BeginBusiness() to fix this error!
             if ( VANILLA_INCLUDE_LIBRARIES_WITH_PATH ) {
                 $currentStylesheet = $relPath;
             }
+            $ob .= "\n".VANILLA_HTML_INDENT;
             $ob .= '<link rel="stylesheet" href="'.$currentStylesheet.'">';
             if ( VANILLA_DEBUG_MODE ) {
                 $ob .= "\n".VANILLA_HTML_INDENT;
@@ -236,11 +237,14 @@ Solution: Place libraries() before BeginBusiness() to fix this error!
         }
 
         // main.css (falls vorhanden):
-        if (file_exists("main.css")) {
-            $ob .= '<link rel="stylesheet" href="main.css">'."\n";
+        $blnFound = false;
+        if (file_exists(__DOCUMENT_ROOT__ . "/main.css")) {
+            $ob .= "\n".VANILLA_HTML_INDENT . '<link rel="stylesheet" href="/main.css">'."\n";
+            $blnFound = true;
         }
-        if (file_exists("css/main.css")) {
-            $ob .= '<link rel="stylesheet" href="/css/main.css">'."\n";
+        if (file_exists( __DOCUMENT_ROOT__ . "/css/main.css")) {
+            if ( !$blnFound ) $ob .= "\n".VANILLA_HTML_INDENT;
+            $ob .= VANILLA_HTML_INDENT.'<link rel="stylesheet" href="/css/main.css">'."\n";
         }
         if ( $pblnEcho ) {
             echo $ob;
@@ -284,6 +288,9 @@ Solution: Place libraries() before BeginBusiness() to fix this error!
      * 
      */
     function require_library($libraryName, $libraryVersion = "locked", $p_blnEcho = true) {
+
+        // Statische Variable definieren für ersten Aufruf:
+        static $blnFirst = true;
 
         // Init output buffer:
         $ob = "";
@@ -379,8 +386,10 @@ Solution: Place libraries() before BeginBusiness() to fix this error!
 
             if ( $cssLink != "" ) {
                 // CSS-Link hinzufügen:
+                if ( !$blnFirst ) $ob .= VANILLA_HTML_INDENT;
+                $blnFirst = false;
                 $ob .= "<!-- " . $library['name'] . " -->";
-                $ob .= '<link rel="stylesheet" href="'.$cssLink.'">'."\n".VANILLA_HTML_INDENT;
+                $ob .= '<link rel="stylesheet" href="'.$cssLink.'">'."\n";
             }
             if ( $jsLink != "" ) {
                 if ($jsLateLoad) {
@@ -392,8 +401,9 @@ Solution: Place libraries() before BeginBusiness() to fix this error!
                 
                 } else {
                     // JS-Link hinzufügen:
+                    if ( !$blnFirst ) $ob .= VANILLA_HTML_INDENT;
                     $ob .= "<!-- " . $library['name'] . " -->";
-                    $ob .= '<script src="'.$jsLink.'"></script>'."\n".VANILLA_HTML_INDENT;
+                    $ob .= '<script src="'.$jsLink.'"></script>'."\n";
                 }
             }
         }
@@ -893,6 +903,12 @@ Solution: Place libraries() before BeginBusiness() to fix this error!
         // Diese Funktion wird am Ende des Dokuments aufgerufen.
         // -> Hier werden die Libraries geladen, die später geladen werden sollen.
         libraries_LateLoad();
+        
+        // Print the output buffer for late scripts:
+        global $vanillaLateScriptsOutputBuffer;
+        if ( !empty($vanillaLateScriptsOutputBuffer) ) {
+            echo $vanillaLateScriptsOutputBuffer;
+        }
     }
 
     function documentEndChecks() {

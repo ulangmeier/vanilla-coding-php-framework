@@ -51,3 +51,24 @@ function httpsPost_JSON(url, postData, debug = false)
     });
 }
 
+/**
+ * 
+ * Refresh the body of the site automatically.
+ * 
+ * @param {number} seconds
+ * 
+ */
+function vn_Site_AutoRefresh(seconds)
+{   
+    // Refresh the body of the site automatically
+    setInterval(function(){
+        // Refresh the body of the site
+        fetch(window.location.href)
+            .then(response => response.text())
+            .then(data => {
+                // Getting the boody of data
+                var body = new DOMParser().parseFromString(data, 'text/html').body;
+                document.body.innerHTML = body.innerHTML;
+            });
+    }, seconds * 1000);
+}
