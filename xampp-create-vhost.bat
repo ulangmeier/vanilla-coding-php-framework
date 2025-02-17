@@ -315,7 +315,7 @@ goto :successMessage
 		:: Yes, open the browser after a short waiting period that lets XAMPP reconfigure apache...
 		echo Browser will be started in a short time... please wait for starting up Apache Web Service...
 		timeout /t 15
-		start "" /B "%filePath%"
+		start https://%subDomainName%
 	) else (
 		echo The folder "%filePath%" does not exist. Cannot open the site in the Webbrowser. Quit.
 	)
