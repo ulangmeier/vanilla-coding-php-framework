@@ -902,7 +902,8 @@ Solution: Place libraries() before BeginBusiness() to fix this error!
     function shutdown() {
         // Diese Funktion wird am Ende des Dokuments aufgerufen.
         // -> Hier werden die Libraries geladen, die später geladen werden sollen.
-        libraries_LateLoad();
+        global $globalLibrariesprocessed;
+        if ( $globalLibrariesprocessed ) libraries_LateLoad();
         
         // Print the output buffer for late scripts:
         global $vanillaLateScriptsOutputBuffer;
