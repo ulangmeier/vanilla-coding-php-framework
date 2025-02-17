@@ -161,7 +161,7 @@
 	 * @return string 
 	 * @author Urs Langmeier
 	 */
-	function vn_Site_AutoRefresh($seconds = 0) {
+	function vn_Site_AutoRefresh($seconds = 1) {
 		global $vanillaLateScriptsOutputBuffer;
 		if ($seconds > 0) {
 			$vanillaLateScriptsOutputBuffer .= VANILLA_HTML_INDENT . '<script>vn_Site_AutoRefresh('.$seconds.')</script>';

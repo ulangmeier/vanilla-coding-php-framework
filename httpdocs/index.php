@@ -14,6 +14,10 @@
 
 	// We are ready!
 	// Just place your code here...
+	
+	// Let us refresh the site every second, okay?
+	// ->It will be easier for you to see the changes in real time
+	vn_Site_AutoRefresh(1);
 
 ?>
 
