@@ -28,7 +28,7 @@
                 "css": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
             },
             "jsLateLoad": true,
-            "loadOnDemand": true
+            "loadOnDemand": false
         },
         {
             "name": "jQuery",
@@ -42,7 +42,7 @@
                 "css": ""
             },
             "jsLateLoad": true,
-            "loadOnDemand": true
+            "loadOnDemand": false
         },
         {
             "name": "Chart.js",
@@ -63,11 +63,11 @@
             "name": "animate",
             "locked": {
                 "version": "4.4.4",
-                "css": "https://cdn.jsdelivr.net/npm/animate.css/animate.min.css"
+                "css": "https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
             },
             "latest" : {
                 "version": "4.4.4",
-                "css": "https://cdn.jsdelivr.net/npm/animate.css/animate.min.css"
+                "css": "https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
             },
             "jsLateLoad": false,
             "loadOnDemand": true

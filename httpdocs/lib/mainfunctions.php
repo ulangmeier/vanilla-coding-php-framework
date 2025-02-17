@@ -27,12 +27,6 @@
     // In Vanilla, we don't need this (will be done in vanilla.php) & is subject to be removed:
     // register_shutdown_function('documentEndChecks');
 
-    // Definiere die Vanilla-Version:
-    define("VANILLA_VERSION", "1.0.0");
-
-    // Define the default intentation for the HTML output:
-    define("VANILLA_HTML_INDENT", "    ");
-
     // Initialisierung:
     global $globalStrLibrariesPreannounced;
     $globalStrLibrariesPreannounced = "";
@@ -174,7 +168,7 @@ Solution: Place libraries() before BeginBusiness() to fix this error!
             $strAdditionalModules = trim($strAdditionalModules);
         }
 
-        $libraries = file_get_contents("lib/libraries.json");
+        $libraries = file_get_contents(__DOCUMENT_ROOT__."/lib/libraries.json");
         $libraries = json_decode($libraries, true);
         $libraries = $libraries['libraries'];
     
@@ -209,18 +203,37 @@ Solution: Place libraries() before BeginBusiness() to fix this error!
             } else {
                 // Die Bibliothek wird immer geladen...
                 // -> Lade die Bibliothek:
-                $ob .= require_library($library['name']);
+                $ob .= require_library($library['name'], "locked", false);
             }
         }
 
         // Aktuelles Stylesheet (falls eine .css-Datei mit dem aktuellen PHP-Skriptnamen
         // existiert):
         $currentStylesheet = basename($_SERVER['SCRIPT_FILENAME'], '.php') . '.css';
-        if (file_exists($currentStylesheet)) {
+        
+        // Aktueller Pfad relativ zum WebRoot:
+        $relPath = vn_File_RemoveExtension($_SERVER['SCRIPT_NAME']).".css";
+        $lookoutPath = vn_File_RemoveExtension($_SERVER['SCRIPT_FILENAME']).".css";
+        
+        if (file_exists($lookoutPath)) {
+            if ( VANILLA_INCLUDE_LIBRARIES_WITH_PATH ) {
+                $currentStylesheet = $relPath;
+            }
             $ob .= '<link rel="stylesheet" href="'.$currentStylesheet.'">';
-        } /* else {
-            consoleLog("Seitenspezifisches Stylesheet ".$currentStylesheet." existiert nicht!");
-        }*/
+            if ( VANILLA_DEBUG_MODE ) {
+                $ob .= "\n".VANILLA_HTML_INDENT;
+                $message = "Found: $lookoutPath";
+                $ob .= "<script>console.log('". $message . "');</script>";
+                $ob .= "\n";
+            }
+        } else {
+            if ( VANILLA_DEBUG_MODE ) {
+                $ob .= "\n".VANILLA_HTML_INDENT;
+                $message = "Not found: ".$lookoutPath;
+                $ob .= "<script>console.log('". $message . "');</script>";
+                $ob .= "\n";
+            }
+        }
 
         // main.css (falls vorhanden):
         if (file_exists("main.css")) {
@@ -319,7 +332,7 @@ Solution: Place libraries() before BeginBusiness() to fix this error!
 
         // Welches Modul soll geladen werden?
         // ->Dazu die libraries.json einlesen:
-        $libraries = file_get_contents("lib/libraries.json");
+        $libraries = file_get_contents(__DOCUMENT_ROOT__."/lib/libraries.json");
         $libraries = json_decode($libraries, true);
         $libraries = $libraries['libraries'];
 
@@ -373,8 +386,8 @@ Solution: Place libraries() before BeginBusiness() to fix this error!
                 if ($jsLateLoad) {
                     // JS-Link später hinzufügen:
                     // consoleLog("Late Load (JS): ".$libraryName);
-                    $javaScript = "<!-- " . $library['name'] . " -->"
-                                 .'<script src="'.$jsLink.'"></script>'."\n".VANILLA_HTML_INDENT;
+                    $javaScript = "\n".VANILLA_HTML_INDENT."<!-- " . $library['name'] . " -->"
+                                 .'<script src="'.$jsLink.'"></script>';
                     $globalRequiredLibrariesToLoadLater_JS[] = $javaScript;
                 
                 } else {
@@ -408,7 +421,7 @@ Solution: Place libraries() before BeginBusiness() to fix this error!
         $globalLateLoadedLibrariesProcessed = true;
 
         // Interne Hauptfunktionen (Mainfunctions):
-        $libURL = "lib/mainfunctions.js";
+        $libURL = "/lib/mainfunctions.js";
         echo "\n".VANILLA_HTML_INDENT.'<script src="'.$libURL.'"></script>'."\n";
 
         // Aktuelles Skript:
@@ -416,12 +429,26 @@ Solution: Place libraries() before BeginBusiness() to fix this error!
         //    existiert...
         $currentScript = basename($_SERVER['SCRIPT_FILENAME'], '.php') . '.js';
 
-        if (file_exists($currentScript)) {
+        // Aktueller Pfad relativ zum WebRoot:
+        $relPath = vn_File_RemoveExtension($_SERVER['SCRIPT_NAME']).".js";
+        $lookoutPath = vn_File_RemoveExtension($_SERVER['SCRIPT_FILENAME']).".js";
+
+        if (file_exists($lookoutPath)) {
+            if ( VANILLA_INCLUDE_LIBRARIES_WITH_PATH ) {
+                $currentScript = $relPath;
+            }
             echo VANILLA_HTML_INDENT.'<script src="'.$currentScript.'"></script>';
+            if ( VANILLA_DEBUG_MODE ) {
+                echo VANILLA_HTML_INDENT;
+                consoleLog("Found: $lookoutPath");
+                echo("\n");
+            }
         }  else {
-            echo VANILLA_HTML_INDENT;
-            consoleLog($currentScript." existiert nicht!");
-            echo("\n");
+            if ( VANILLA_DEBUG_MODE ) {
+                echo VANILLA_HTML_INDENT;
+                consoleLog("Not found: $lookoutPath");
+                echo("\n");
+            }
         }
 
         // Module, die zum später laden hinzugefügt wurden
@@ -429,8 +456,9 @@ Solution: Place libraries() before BeginBusiness() to fix this error!
         global $globalRequiredLibrariesToLoadLater_JS;
         if (!empty($globalRequiredLibrariesToLoadLater_JS)) {
             foreach ($globalRequiredLibrariesToLoadLater_JS as $lateLoadJavaScript) {
-                echo VANILLA_HTML_INDENT.$lateLoadJavaScript;
+                echo $lateLoadJavaScript;
             }
+            echo "\n";
         }
     
     }

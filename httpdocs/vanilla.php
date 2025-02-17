@@ -25,6 +25,20 @@
     #
     ######################################################################################################
 
+	// Define the Vanilla-Version:
+	define("VANILLA_VERSION", "1.0.0");
+
+	// Define Debug Mode: 0 = Off, 1 = On
+	define("VANILLA_DEBUG_MODE", 1);
+
+	// Include .css and .js libraries with path? (improves compatibility with some servers)
+	define("VANILLA_INCLUDE_LIBRARIES_WITH_PATH", true);
+
+	// Define the default intentation for the HTML output:
+	define("VANILLA_HTML_INDENT", "    ");
+	
+	
+
 	require_once('lib/mainfunctions.php');
 	require_once('lib/errors.php');
 	installWellErrorHandler(E_ALL, E_ALL);
@@ -32,6 +46,9 @@
 	$blnBeginBusinessCalled = false;
 	$blnVanillaBusinessStarted = false;
 	register_shutdown_function('vanillaDocumentEndChecks');
+
+	// Define the document root
+	define("__DOCUMENT_ROOT__", $_SERVER['DOCUMENT_ROOT']);
 	
 	function BeginBusiness($appname = "", $title = "", $description = "", $libraries = "") {
 		global $blnBeginBusinessCalled;
@@ -103,6 +120,33 @@
 
 			die();
 		}
+	}
+
+	/**
+	 * Removes the extension from a file path.
+	 *
+	 * @param  string $path
+	 * @return string The path without the file extension.
+	 * @author Urs Langmeier
+	 */
+	function vn_File_RemoveExtension($path) {
+		$ext = pathinfo($path, PATHINFO_EXTENSION);
+		if ($ext) {
+			$path = substr($path, 0, -strlen($ext)-1);
+		}
+		return $path;
+	}
+
+	/**
+	 * Returns the extension of a file path.
+	 *
+	 * @param  string $path
+	 * @return string The file extension.
+	 * @author Urs Langmeier
+	 */
+	function vn_File_GetExtension($path) {
+		$ext = pathinfo($path, PATHINFO_EXTENSION);
+		return $ext;
 	}
 	
 ?>

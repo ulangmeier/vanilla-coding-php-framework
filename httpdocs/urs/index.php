@@ -1,9 +1,9 @@
 <?php
 	// This is a simple example of how to use Vanilla PHP
-	require_once('vanilla.php');
+	require_once('../vanilla.php');
 
 	// Let's load some libraries, specified in /lib/libraries.json:
-	libraries("chartjs,animate,jquery");
+	libraries("chartjs,animate");
 
 	// Let's begin our business
 	BeginBusiness(	"MyApp"
@@ -20,4 +20,3 @@
 		<p class="lead">This is a simple Bootstrap example.</p>
 		<button class="btn btn-primary">Click Me</button>
 	</div>
-
