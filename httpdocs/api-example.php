@@ -4,7 +4,7 @@
 
 	echo 'Yes, you can build also UI-less applications with Vanilla PHP.';
 	echo '<br>';
-	echo 'But something amazing is coming in near future:';
+	echo 'But there is something really amazing coming to Vanilla PHP in near future:';
 	echo '<br>';
 	echo '<strong>An easy-to-use <i>route-based</i> API is coming to Vanilla PHP soon</strong>!';
 	echo '<br>';
