@@ -10,7 +10,7 @@
 	echo '<br>';
 	echo 'You don\'t need to switch to Express.js, Node or GoLang to create great and scalable APIs!';
 	echo '<br>';
-	echo 'Stay tuned and watch this repository for updates!';
+	echo 'Stay tuned and watch my repository for updates!';
 	echo '<br>';
 	echo '<a href="https://github.com/ulangmeier/vanilla-php-framework">https://github.com/ulangmeier/vanilla-php-framework</a>';
 
