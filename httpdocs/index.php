@@ -16,7 +16,8 @@
 	// Just place your code here...
 	
 	// Let us refresh the site every second, okay?
-	// ->It will be easier for you to see the changes in real time
+	// ->It will be easier for you to see the changes that you make, because these
+	//   changes will be reflected in the browser every second.
 	vn_Site_AutoRefresh(1);
 
 ?>
