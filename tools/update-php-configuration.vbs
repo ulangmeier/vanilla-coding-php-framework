@@ -13,7 +13,7 @@ Option Explicit
 '::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 Dim sourceFile, targetFile, fso, sourceStream, targetStream, line, found, targetStreamForCheck
-dim scriptFolder, objScript, blnFirst
+dim scriptFolder, objScript, blnFirst, lInsertedLines
 Dim sScriptPath, sParentFolder, sSubDomainName
 
 ' FileSystemObject erstellen
